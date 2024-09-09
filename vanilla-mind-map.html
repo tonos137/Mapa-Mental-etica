@@ -21,8 +21,8 @@
         }
         .concept {
             position: absolute;
-            width: 100px;
-            height: 100px;
+            width: 150px;
+            height: 150px;
             background-color: rgba(59, 130, 246, 0.8);
             border-radius: 50%;
             display: flex;
@@ -31,6 +31,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             overflow: hidden;
+            z-index: 1;
         }
         .concept:hover {
             transform: scale(1.1);
@@ -96,7 +97,13 @@
             `;
             element.addEventListener('click', () => {
                 const content = element.querySelector('.content');
-                content.style.display = content.style.display === 'block' ? 'none' : 'block';
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                    element.style.zIndex = 1; 
+                } else {
+                    content.style.display = 'block';
+                    element.style.zIndex = 100;
+                }
             });
             return element;
         }
