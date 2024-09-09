@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Mind Map</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+        #mind-map {
+            width: 100%;
+            height: 100vh;
+            background-image: url('https://wallpaperaccess.com/full/3315205.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .concept {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: rgba(59, 130, 246, 0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .concept:hover {
+            transform: scale(1.1);
+        }
+        .concept h3 {
+            color: white;
+            text-align: center;
+            margin: 0;
+        }
+        .content {
+            display: none;
+            position: absolute;
+            z-index: 10;
+            background-color: white;
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 250px;
+            top: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .content h4 {
+            font-weight: bold;
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div id="mind-map"></div>
+
+    <script>
+        const concepts = [
+            { id: 'ser', title: 'Ser', content: 'El ser es la existencia misma. Los trascendentales del ser son: unidad, verdad, bondad y belleza.', x: '50%', y: '50%' },
+            { id: 'bien', title: 'Bien', content: 'El bien es la perfección del ser. Hay grados de bien según la perfección alcanzada. El bien moral se refiere a las acciones humanas conformes a la razón y la virtud.', x: '25%', y: '25%' },
+            { id: 'valor', title: 'Valor', content: 'Un ente es valioso cuando posee perfección y es capaz de satisfacer una necesidad o deseo. El valor está relacionado con el bien, pero se enfoca en la apreciación subjetiva.', x: '75%', y: '25%' },
+            { id: 'virtud', title: 'Virtud', content: 'La virtud es un hábito operativo bueno. Se diferencia del vicio, que es un hábito malo. Se logra mediante la práctica constante y viene en "racimos" (virtudes interconectadas).', x: '25%', y: '75%' },
+            { id: 'felicidad', title: 'Felicidad', content: 'La verdadera felicidad va más allá de los placeres momentáneos. Está relacionada con el amor y la libertad, e implica la realización plena del ser humano.', x: '75%', y: '75%' },
+        ];
+
+        function createConcept(concept) {
+            const element = document.createElement('div');
+            element.className = 'concept';
+            element.style.left = concept.x;
+            element.style.top = concept.y;
+            element.innerHTML = `
+                <h3>${concept.title}</h3>
+                <div class="content">
+                    <h4>${concept.title}</h4>
+                    <p>${concept.content}</p>
+                </div>
+            `;
+            element.addEventListener('click', () => {
+                const content = element.querySelector('.content');
+                content.style.display = content.style.display === 'block' ? 'none' : 'block';
+            });
+            return element;
+        }
+
+        function initMindMap() {
+            const mindMap = document.getElementById('mind-map');
+            concepts.forEach(concept => {
+                mindMap.appendChild(createConcept(concept));
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', initMindMap);
+    </script>
+</body>
+</html>
