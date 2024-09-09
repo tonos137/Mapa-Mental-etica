@@ -71,12 +71,14 @@
             { id: 'felicidad', title: 'Felicidad', content: 'La verdadera felicidad va más allá de los placeres momentáneos. Está relacionada con el amor y la libertad, e implica la realización plena del ser humano.', x: '75%', y: '75%', image: 'Felicidad.jpg' },
         ];
 
-        function createConcept(concept) {
+                function createConcept(concept) {
             const element = document.createElement('div');
             element.className = 'concept';
             element.style.left = concept.x;
             element.style.top = concept.y;
+            element.style.transform = 'translate(-50%, -50%)';
             element.innerHTML = `
+                <img src="${concept.image}" alt="${concept.title}" class="concept-image">
                 <h3>${concept.title}</h3>
                 <div class="content">
                     <h4>${concept.title}</h4>
