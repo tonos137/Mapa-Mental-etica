@@ -41,6 +41,7 @@
             text-align: center;
             margin: 0;
             z-index: 2;
+            position: relative;
         }
         .concept-image {
             position: absolute;
@@ -52,13 +53,13 @@
         .content {
             display: none;
             position: absolute;
-            z-index: 10;
+            z-index: 100;
             background-color: white;
             padding: 16px;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             width: 250px;
-            top: 110%;
+            top: 120%;
             left: 50%;
             transform: translateX(-50%);
         }
@@ -81,7 +82,7 @@
             { id: 'felicidad', title: 'Felicidad', content: 'La verdadera felicidad va más allá de los placeres momentáneos. Está relacionada con el amor y la libertad, e implica la realización plena del ser humano.', x: '75%', y: '75%', image: 'Felicidad.jpg' },
         ];
 
-                function createConcept(concept) {
+ function createConcept(concept) {
             const element = document.createElement('div');
             element.className = 'concept';
             element.style.left = concept.x;
@@ -95,14 +96,16 @@
                     <p>${concept.content}</p>
                 </div>
             `;
-            element.addEventListener('click', () => {
+            element.addEventListener('click', (event) => {
+                event.stopPropagation(); 
                 const content = element.querySelector('.content');
                 if (content.style.display === 'block') {
                     content.style.display = 'none';
                     element.style.zIndex = 1; 
                 } else {
+                    document.querySelectorAll('.content').forEach(c => c.style.display = 'none');
                     content.style.display = 'block';
-                    element.style.zIndex = 100;
+                    element.style.zIndex = 100; 
                 }
             });
             return element;
@@ -112,6 +115,12 @@
             const mindMap = document.getElementById('mind-map');
             concepts.forEach(concept => {
                 mindMap.appendChild(createConcept(concept));
+            });
+
+
+            document.addEventListener('click', () => {
+                document.querySelectorAll('.content').forEach(content => content.style.display = 'none');
+                document.querySelectorAll('.concept').forEach(concept => concept.style.zIndex = 1);
             });
         }
 
