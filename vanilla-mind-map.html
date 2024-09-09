@@ -35,8 +35,8 @@
             z-index: 1;
         }
         .concept.expanded {
-            width: 250px; /* Expands the globe */
-            height: 250px; /* Expands the globe */
+            width: 270px; 
+            height: 270px; 
         }
         .concept:hover {
             transform: scale(1.05);
@@ -57,20 +57,20 @@
             transition: opacity 0.3s ease;
         }
         .content {
-            display: none; /* Initially hidden */
+            display: none; 
             position: relative;
             z-index: 2;
             background-color: rgba(255, 255, 255, 0.9);
             padding: 16px;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 90%; /* Fit inside the expanded globe */
+            width: 90%; 
             text-align: center;
             transition: opacity 0.3s ease;
         }
         .concept.expanded .content {
-            display: block; /* Show content when expanded */
-            opacity: 1; /* Fully visible */
+            display: block; 
+            opacity: 1; 
         }
     </style>
 </head>
@@ -101,11 +101,10 @@
                 </div>
             `;
             element.addEventListener('click', (event) => {
-                event.stopPropagation(); // Prevent click event from bubbling up
+                event.stopPropagation(); 
                 if (element.classList.contains('expanded')) {
                     element.classList.remove('expanded');
                 } else {
-                    // Collapse all other concepts before expanding this one
                     document.querySelectorAll('.concept').forEach(concept => {
                         concept.classList.remove('expanded');
                     });
@@ -121,7 +120,6 @@
                 mindMap.appendChild(createConcept(concept));
             });
 
-            // Click anywhere outside to close open content
             document.addEventListener('click', () => {
                 document.querySelectorAll('.concept').forEach(concept => concept.classList.remove('expanded'));
             });
