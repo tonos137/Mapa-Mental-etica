@@ -18,11 +18,12 @@
             background-size: cover;
             background-position: center;
             position: relative;
+            overflow: hidden;
         }
         .concept {
             position: absolute;
-            width: 150px;
-            height: 150px;
+            width: 120px;
+            height: 120px;
             background-color: rgba(59, 130, 246, 0.8);
             border-radius: 50%;
             display: flex;
@@ -33,8 +34,12 @@
             overflow: hidden;
             z-index: 1;
         }
+        .concept.expanded {
+            width: 250px; /* Expands the globe */
+            height: 250px; /* Expands the globe */
+        }
         .concept:hover {
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
         .concept h3 {
             color: white;
@@ -49,24 +54,23 @@
             height: 100%;
             object-fit: cover;
             z-index: 1;
+            transition: opacity 0.3s ease;
         }
         .content {
-            display: none;
-            position: absolute;
-            z-index: 100;
-            background-color: white;
+            display: none; /* Initially hidden */
+            position: relative;
+            z-index: 2;
+            background-color: rgba(255, 255, 255, 0.9);
             padding: 16px;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 250px;
-            top: 120%;
-            left: 50%;
-            transform: translateX(-50%);
+            width: 90%; /* Fit inside the expanded globe */
+            text-align: center;
+            transition: opacity 0.3s ease;
         }
-        .content h4 {
-            font-weight: bold;
-            margin-top: 0;
-            margin-bottom: 8px;
+        .concept.expanded .content {
+            display: block; /* Show content when expanded */
+            opacity: 1; /* Fully visible */
         }
     </style>
 </head>
@@ -74,7 +78,7 @@
     <div id="mind-map"></div>
 
     <script>
-              const concepts = [
+        const concepts = [
             { id: 'ser', title: 'Ser', content: 'El ser es la existencia misma. Los trascendentales del ser son: unidad, verdad, bondad y belleza.', x: '50%', y: '50%', image: 'Ser.jpg' },
             { id: 'bien', title: 'Bien', content: 'El bien es la perfección del ser. Hay grados de bien según la perfección alcanzada. El bien moral se refiere a las acciones humanas conformes a la razón y la virtud.', x: '25%', y: '25%', image: 'Bien.jpg' },
             { id: 'valor', title: 'Valor', content: 'Un ente es valioso cuando posee perfección y es capaz de satisfacer una necesidad o deseo. El valor está relacionado con el bien, pero se enfoca en la apreciación subjetiva.', x: '75%', y: '25%', image: 'Valor.jpg' },
@@ -82,7 +86,7 @@
             { id: 'felicidad', title: 'Felicidad', content: 'La verdadera felicidad va más allá de los placeres momentáneos. Está relacionada con el amor y la libertad, e implica la realización plena del ser humano.', x: '75%', y: '75%', image: 'Felicidad.jpg' },
         ];
 
- function createConcept(concept) {
+        function createConcept(concept) {
             const element = document.createElement('div');
             element.className = 'concept';
             element.style.left = concept.x;
@@ -97,15 +101,15 @@
                 </div>
             `;
             element.addEventListener('click', (event) => {
-                event.stopPropagation(); 
-                const content = element.querySelector('.content');
-                if (content.style.display === 'block') {
-                    content.style.display = 'none';
-                    element.style.zIndex = 1; 
+                event.stopPropagation(); // Prevent click event from bubbling up
+                if (element.classList.contains('expanded')) {
+                    element.classList.remove('expanded');
                 } else {
-                    document.querySelectorAll('.content').forEach(c => c.style.display = 'none');
-                    content.style.display = 'block';
-                    element.style.zIndex = 100; 
+                    // Collapse all other concepts before expanding this one
+                    document.querySelectorAll('.concept').forEach(concept => {
+                        concept.classList.remove('expanded');
+                    });
+                    element.classList.add('expanded');
                 }
             });
             return element;
@@ -117,10 +121,9 @@
                 mindMap.appendChild(createConcept(concept));
             });
 
-
+            // Click anywhere outside to close open content
             document.addEventListener('click', () => {
-                document.querySelectorAll('.content').forEach(content => content.style.display = 'none');
-                document.querySelectorAll('.concept').forEach(concept => concept.style.zIndex = 1);
+                document.querySelectorAll('.concept').forEach(concept => concept.classList.remove('expanded'));
             });
         }
 
